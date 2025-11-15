@@ -3,7 +3,7 @@
 
 StateController::StateController(StateMachineModel& model, TimeModel& timeModel, DisplayView& view)
   : model(model), timeModel(timeModel), view(view), 
-    lastRenderedState(ChessClockState::START), lastIdleUpdate(0) {
+    lastRenderedState(ChessClockState::START), lastIdleUpdate(0), selectedMenuItem(0) {
 }
 
 void StateController::init() {
@@ -37,11 +37,22 @@ void StateController::handleButtonPress() {
   // Handle state transitions based on current state
   switch (currentState) {
     case ChessClockState::IDLE:
+      // Reset menu selection to first item when entering menu
+      selectedMenuItem = 0;
       transitionTo(ChessClockState::MAIN_MENU);
       break;
       
     case ChessClockState::MAIN_MENU:
-      // TODO: Handle menu selection
+      // Handle menu item selection
+      if (selectedMenuItem == 0) {
+        // "Play Game" selected
+        Serial.println("[INFO]: Play Game selected");
+        transitionTo(ChessClockState::WAIT_FOR_MODE_SELECTION);
+      } else if (selectedMenuItem == 1) {
+        // "Settings" selected
+        Serial.println("[INFO]: Settings selected");
+        // TODO: Navigate to settings
+      }
       break;
       
     // TODO: Add more state transition handlers
@@ -100,7 +111,18 @@ void StateController::handleEncoderRotation(int direction) {
   // Handle encoder rotation based on current state
   switch (currentState) {
     case ChessClockState::MAIN_MENU:
-      // TODO: Navigate menu items
+      // Navigate menu items
+      selectedMenuItem += direction;
+      // Wrap around: if < 0, go to last item; if >= count, go to first item
+      if (selectedMenuItem < 0) {
+        selectedMenuItem = MENU_ITEM_COUNT - 1;
+      } else if (selectedMenuItem >= MENU_ITEM_COUNT) {
+        selectedMenuItem = 0;
+      }
+      // Update view to show new selection
+      updateView();
+      Serial.print("[INFO]: Menu item selected: ");
+      Serial.println(selectedMenuItem);
       break;
       
     // TODO: Add more encoder handlers
@@ -115,7 +137,13 @@ ChessClockState StateController::getCurrentState() const {
 
 void StateController::updateView() {
   ChessClockState currentState = model.getCurrentState();
-  view.renderState(currentState);
+  
+  // Pass menu selection index if in MAIN_MENU state
+  if (currentState == ChessClockState::MAIN_MENU) {
+    view.renderMainMenu(selectedMenuItem);
+  } else {
+    view.renderState(currentState);
+  }
 }
 
 void StateController::transitionTo(ChessClockState newState) {

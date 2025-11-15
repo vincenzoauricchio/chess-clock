@@ -62,6 +62,8 @@ private:
   DisplayView& view;
   ChessClockState lastRenderedState;
   unsigned long lastIdleUpdate;
+  int selectedMenuItem; // Current menu selection index
+  static const int MENU_ITEM_COUNT = 2; // Number of menu items
   
   /**
    * @brief Update the view based on current state

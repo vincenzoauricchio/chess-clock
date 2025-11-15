@@ -41,12 +41,41 @@ void DisplayView::renderIdle() {
   tft.drawString("Press button to start", tft.width() / 2, tft.height() / 2 + 20, 1);
 }
 
-void DisplayView::renderMainMenu() {
-  clear();
+void DisplayView::renderMainMenu(int selectedIndex) {
+  // Set white background
+  tft.fillScreen(TFT_WHITE);
+  
+  // Title
   tft.setTextDatum(TC_DATUM); // Top-Center Alignment
+  tft.setTextColor(TFT_BLACK, TFT_WHITE); // Black text on white background
+  tft.setTextSize(2);
   tft.drawString("Main Menu", tft.width() / 2, 20, 2);
-  tft.drawString("1. Play Game", tft.width() / 2, 60, 1);
-  tft.drawString("2. Settings", tft.width() / 2, 80, 1);
+  
+  // Menu items
+  tft.setTextSize(1);
+  int yPos = 60;
+  int lineHeight = 30;
+  
+  // Menu item 0: Play Game
+  if (selectedIndex == 0) {
+    // Highlight selected item with background
+    tft.fillRect(10, yPos - 5, tft.width() - 20, 25, TFT_BLACK);
+    tft.setTextColor(TFT_WHITE, TFT_BLACK); // White text on black background
+  } else {
+    tft.setTextColor(TFT_BLACK, TFT_WHITE); // Black text on white background
+  }
+  tft.drawString("1. Play Game", tft.width() / 2, yPos, 1);
+  
+  // Menu item 1: Settings
+  yPos += lineHeight;
+  if (selectedIndex == 1) {
+    // Highlight selected item with background
+    tft.fillRect(10, yPos - 5, tft.width() - 20, 25, TFT_BLACK);
+    tft.setTextColor(TFT_WHITE, TFT_BLACK); // White text on black background
+  } else {
+    tft.setTextColor(TFT_BLACK, TFT_WHITE); // Black text on white background
+  }
+  tft.drawString("2. Settings", tft.width() / 2, yPos, 1);
 }
 
 void DisplayView::renderState(ChessClockState state) {
@@ -55,7 +84,9 @@ void DisplayView::renderState(ChessClockState state) {
       renderIdle();
       break;
     case ChessClockState::MAIN_MENU:
-      renderMainMenu();
+      // renderMainMenu() is called from StateController with selectedIndex
+      // This case should not be reached, but kept for safety
+      renderMainMenu(0);
       break;
     // TODO: Add more state renderings
     default:

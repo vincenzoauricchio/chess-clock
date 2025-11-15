@@ -39,8 +39,9 @@ public:
   
   /**
    * @brief Render the main menu
+   * @param selectedIndex Index of the currently selected menu item (0-based)
    */
-  void renderMainMenu();
+  void renderMainMenu(int selectedIndex = 0);
   
   /**
    * @brief Render a specific state
