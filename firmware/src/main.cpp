@@ -1,48 +1,41 @@
 #include <Arduino.h>
-#include <TFT_eSPI.h>
 #include "config.h"
-#include "state_machine.h"
+#include "model/state_machine.h"
+#include "model/time_model.h"
+#include "view/display.h"
+#include "presenter/state_controller.h"
 
-// Display-Objekt erstellen
-TFT_eSPI tft = TFT_eSPI();
-
-// State Machine
-ChessClockState currentState = ChessClockState::START;
+// MVP Components
+StateMachineModel stateMachine;
+TimeModel timeModel;
+DisplayView display;
+StateController controller(stateMachine, timeModel, display);
 
 void setup() {
   // Serial Monitor initialisieren
   Serial.begin(SERIAL_BAUD_RATE);
   delay(1000);
-  Serial.println("Chess Clock - Display Test");
-
-  // Backlight-Pin konfigurieren und aktivieren
-  pinMode(TFT_BACKLIGHT_PIN, OUTPUT);
-  digitalWrite(TFT_BACKLIGHT_PIN, HIGH);
-
-  // Display initialisieren
-  tft.init();
-  tft.setRotation(1); // Landscape-Modus (kann 0-3 sein, je nach Ausrichtung)
+  Serial.println("Chess Clock - MVP Architecture");
   
-  // Display löschen und Hintergrundfarbe setzen
-  tft.fillScreen(TFT_BLACK);
+  // Initialize View (Display)
+  if (!display.init()) {
+    Serial.println("ERROR: Display initialization failed!");
+    while(1) delay(1000); // Stop on error
+  }
+  Serial.println("Display initialized");
   
-  // Textfarbe und -größe setzen
-  tft.setTextColor(TFT_WHITE, TFT_BLACK);
-  tft.setTextSize(2);
+  // Initialize Controller (which initializes Model)
+  controller.init();
+  Serial.println("State Controller initialized");
   
-  // "Hello World" in der Mitte des Displays ausgeben
-  tft.setTextDatum(MC_DATUM); // Middle-Center Alignment
-  tft.drawString("Hello Vincenzo!", tft.width() / 2, tft.height() / 2, 2);
-  
-  Serial.println("Display initialized - Hello World displayed");
-  
-  // State Machine initialisieren
-  currentState = ChessClockState::IDLE;
-  Serial.print("State Machine initialized: ");
-  Serial.println(stateToString(currentState));
+  Serial.println("System ready!");
 }
 
 void loop() {
-  // Hier könnte später die State Machine laufen
-  delay(100);
+  // Update state machine and view
+  controller.update();
+  
+  // TODO: Read input (button, encoder) and pass to controller
+  // For now, just a simple delay
+  delay(10);
 }
