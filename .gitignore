@@ -1,1 +1,104 @@
+# macOS
 .DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# PlatformIO
+.pio/
+.pioenvs/
+.piolibdeps/
+.clang_complete
+.gcc-flags.json
+.vscode/.browse.c_cpp.db*
+.vscode/c_cpp_properties.json
+.vscode/launch.json
+.vscode/ipch
+
+# Build directories
+build/
+dist/
+*.o
+*.elf
+*.bin
+*.hex
+*.map
+
+# IDE - VSCode
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json.template
+
+# IDE - CLion
+.idea/
+cmake-build-*/
+
+# IDE - Eclipse
+.project
+.cproject
+.settings/
+
+# IDE - Visual Studio Code
+*.code-workspace
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Temporary files
+*~
+*.swp
+*.swo
+*.tmp
+*.bak
+*.cache
+
+# Logs
+*.log
+
+# Environment variables
+.env
+.env.local
+
+# Python (falls verwendet)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Node modules (falls verwendet)
+node_modules/
+package-lock.json
+
+# Backup files
+*.backup
+*.orig
