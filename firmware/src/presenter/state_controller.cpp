@@ -50,6 +50,50 @@ void StateController::handleButtonPress() {
   }
 }
 
+void StateController::handleButtonPress(int buttonId) {
+  ChessClockState currentState = model.getCurrentState();
+  
+  Serial.print("[INFO]: Button ");
+  Serial.print(buttonId);
+  Serial.print(" pressed in state: ");
+  Serial.println(stateToString(currentState));
+  
+  // Handle button press based on current state and button ID
+  switch (currentState) {
+    case ChessClockState::WHITE_TIME_RUNNING:
+      if (buttonId == 1) {
+        // White player presses their button - switch to black
+        Serial.println("[INFO]: White pressed - switching to Black");
+        transitionTo(ChessClockState::BLACK_TIME_RUNNING);
+      }
+      break;
+      
+    case ChessClockState::BLACK_TIME_RUNNING:
+      if (buttonId == 2) {
+        // Black player presses their button - switch to white
+        Serial.println("[INFO]: Black pressed - switching to White");
+        transitionTo(ChessClockState::WHITE_TIME_RUNNING);
+      }
+      break;
+      
+    case ChessClockState::PAUSE:
+      // Either button can resume from pause
+      if (buttonId == 1) {
+        Serial.println("[INFO]: Resuming - White's turn");
+        transitionTo(ChessClockState::WHITE_TIME_RUNNING);
+      } else if (buttonId == 2) {
+        Serial.println("[INFO]: Resuming - Black's turn");
+        transitionTo(ChessClockState::BLACK_TIME_RUNNING);
+      }
+      break;
+      
+    // TODO: Add more button handlers for other states
+    default:
+      Serial.println("[INFO]: Button press not handled in current state");
+      break;
+  }
+}
+
 void StateController::handleEncoderRotation(int direction) {
   ChessClockState currentState = model.getCurrentState();
   

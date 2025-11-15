@@ -34,9 +34,15 @@ public:
   void update();
   
   /**
-   * @brief Handle button press event
+   * @brief Handle button press event (rotary encoder button)
    */
   void handleButtonPress();
+  
+  /**
+   * @brief Handle individual button press
+   * @param buttonId Button identifier (1 = Button 1, 2 = Button 2)
+   */
+  void handleButtonPress(int buttonId);
   
   /**
    * @brief Handle encoder rotation

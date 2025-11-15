@@ -10,6 +10,8 @@ bool DisplayView::init() {
   digitalWrite(TFT_BACKLIGHT_PIN, HIGH);
   
   // Display initialisieren
+  // Note: This might fail if display is not connected
+  // The system will continue to work without display for testing
   tft.init();
   tft.setRotation(1); // Landscape-Modus
   
@@ -28,9 +30,11 @@ void DisplayView::clear() {
 }
 
 void DisplayView::renderIdle() {
-  clear();
+  // Set white background
+  tft.fillScreen(TFT_WHITE);
+  
   tft.setTextDatum(MC_DATUM); // Middle-Center Alignment
-  tft.setTextColor(TFT_WHITE, TFT_BLACK);
+  tft.setTextColor(TFT_BLACK, TFT_WHITE); // Black text on white background
   tft.setTextSize(2);
   tft.drawString("Chess Clock", tft.width() / 2, tft.height() / 2 - 20, 2);
   tft.setTextSize(1);
@@ -48,7 +52,7 @@ void DisplayView::renderMainMenu() {
 void DisplayView::renderState(ChessClockState state) {
   switch (state) {
     case ChessClockState::IDLE:
-      renderMainMenu();
+      renderIdle();
       break;
     case ChessClockState::MAIN_MENU:
       renderMainMenu();
