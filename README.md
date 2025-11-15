@@ -3,6 +3,10 @@
 This repository contains the software, including a guide for the hardware, for a self-designed and custom-built chess clock.
 
 ## ⚡️ Features
+- Displays time in idle mode.
+- Create and select players for games.
+- Choose from different game modes.
+- Stores game results.
 
 ## 🏗️ Architecture
 
