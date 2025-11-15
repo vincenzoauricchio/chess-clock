@@ -2,6 +2,8 @@
 #include "config.h"
 #include "model/state_machine.h"
 #include "model/time_model.h"
+#include "model/game_model.h"
+#include "model/player_model.h"
 #include "view/display.h"
 #include "presenter/state_controller.h"
 #include "presenter/serial_input.h"
@@ -9,8 +11,10 @@
 // MVP Components
 StateMachineModel stateMachine;
 TimeModel timeModel;
+GameModel gameModel;
+PlayerModel playerModel;
 DisplayView display;
-StateController controller(stateMachine, timeModel, display);
+StateController controller(stateMachine, timeModel, gameModel, playerModel, display);
 SerialInputHandler serialInput(controller);
 
 void setup() {

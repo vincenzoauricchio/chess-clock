@@ -10,6 +10,8 @@
 
 #include "model/state_machine.h"
 #include "model/time_model.h"
+#include "model/game_model.h"
+#include "model/player_model.h"
 #include "view/display.h"
 
 /**
@@ -20,7 +22,7 @@
  */
 class StateController {
 public:
-  StateController(StateMachineModel& model, TimeModel& timeModel, DisplayView& view);
+  StateController(StateMachineModel& model, TimeModel& timeModel, GameModel& gameModel, PlayerModel& playerModel, DisplayView& view);
   
   /**
    * @brief Initialize the controller
@@ -59,11 +61,18 @@ public:
 private:
   StateMachineModel& model;
   TimeModel& timeModel;
+  GameModel& gameModel;
+  PlayerModel& playerModel;
   DisplayView& view;
   ChessClockState lastRenderedState;
   unsigned long lastIdleUpdate;
   int selectedMenuItem; // Current menu selection index
-  static const int MENU_ITEM_COUNT = 2; // Number of menu items
+  int selectedModeIndex; // Current mode selection index (0 = Rapid, 1 = Blitz)
+  int selectedKeyIndex; // Current keyboard key selection index (0-28)
+  int selectedPlayerIndex; // Current player selection index (0-based)
+  static const int MENU_ITEM_COUNT = 3; // Number of menu items (Play Game, Add Player, Settings)
+  static const int MODE_COUNT = 2; // Number of game modes
+  static const int KEYBOARD_KEY_COUNT = 29; // 26 letters (A-Z) + Space + Del + Done
   
   /**
    * @brief Update the view based on current state

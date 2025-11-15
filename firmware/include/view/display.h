@@ -44,6 +44,28 @@ public:
   void renderMainMenu(int selectedIndex = 0);
   
   /**
+   * @brief Render the game mode selection screen
+   * @param selectedIndex Index of the currently selected mode (0-based)
+   */
+  void renderModeSelection(int selectedIndex = 0);
+  
+  /**
+   * @brief Render the player name entry screen with virtual keyboard
+   * @param currentName The current name being entered
+   * @param selectedKeyIndex Index of the currently selected key (0-based)
+   */
+  void renderEnterPlayerName(const char* currentName, int selectedKeyIndex);
+  
+  /**
+   * @brief Render the player selection screen
+   * @param players Array of player names
+   * @param playerCount Number of players
+   * @param selectedIndex Index of the currently selected player (0-based)
+   * @param title Title to display (e.g., "Select White Player")
+   */
+  void renderPlayerSelection(const char* players[], size_t playerCount, int selectedIndex, const char* title);
+  
+  /**
    * @brief Render a specific state
    * @param state The state to render
    */
